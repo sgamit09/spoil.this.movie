@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>What The Plot?!</title>
+</head>
+
+
+<h1 class="app-title"><i class="fa-solid fa-burger-fries"></i>Movie API Testing!</h1>
+<p>Hey what movie is that?</p>
+<img src="https://media.giphy.com/media/kd9BlRovbPOykLBMqX/giphy.gif">
+
+<h3 class="card-header text-uppercase">Search Movie</h3>
+<form id="movie-form">
+    <label class="form-label" for="character">Movie Title:</label>
+    <input name="movie-title" id="movie-title" type="text" autofocus="true" class="form-input" />
+    <button type="submit" class="btn">Press Play</button>
+</form>
+</div>
+
+<h3 id="titleMe"></h3>
+<p id="movie-plot"></p>
+<img id="poster" src="">
+
+<script>
+    var movieInputEl = document.getElementById('movie-title');
+    var movieFormEl = document.getElementById('movie-form');
+    var plotContainerEl = document.querySelector('#movie-plot');
+    var moviePoster = document.getElementById('poster');
+
+    var formSubmitHandler = function (event) {
+        event.preventDefault();
+
+        var movieTitle = movieInputEl.value.trim();
+        console.log(movieTitle);
+
+        if (movieTitle) {
+            getMovieRepos(movieTitle);
+            plotContainerEl.textContent = '';
+        } else {
+            alert('Please enter a movie title.');
+        }
+    };
+
+    movieFormEl.addEventListener('submit', formSubmitHandler);
+
+    var getMovieRepos = function (movieTitle) {
+
+        var apiUrl = `https://www.omdbapi.com/?apikey=1d2b52b9&t=${movieTitle}`
+
+        console.log(apiUrl);
+
+        fetch(apiUrl)
+            .then(function (response) {
+                if (response.ok) {
+                    response.json().then(function (data) {
+                        console.log(data);
+                        var movieTitle = document.getElementById("titleMe");
+                        var plot = document.getElementById("movie-plot");
+                        movieTitle.textContent = data.Title;
+                        plot.textContent = data.Plot;
+                        moviePoster.src = data.Poster;
+
+                    });
+
+                };
+
+            });
+        }
+</script>
